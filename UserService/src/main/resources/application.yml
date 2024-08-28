@@ -12,6 +12,30 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+management:
+  endpoints:
+     web:
+       exposure:
+         include: health
+  endpoint:
+    health:
+      show-details: always
+  health:
+    circuitbreakers:
+      enabled: true
+resilience4j:
+  circuitbreaker:
+    instances:
+      ratingHotelBreaker:
+        registerHelathIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
 
 
 #eureka:
